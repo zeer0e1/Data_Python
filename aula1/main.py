@@ -33,13 +33,36 @@ connection.commit()
 
 
 # Inserir um valor na tabela
-cursor.execute(f'INSERT INTO {TABLE_NAME} (id, name, weigth)'
-               'VALUES (NULL, "Skysauro", 2), (NULL, "Rauana Ribeiro", 14.5)'
+
+queryInsert = (f'INSERT INTO {TABLE_NAME} (name, weigth)'
+               'VALUES'
+               '(:nome, :peso)'
                )
-# varios valores  cursor.executemany()
+
+# Executa uma vez só
+# cursor.execute(queryInsert, ['Buga', 3])
+
+# Insert de varios valores
+cursor.executemany(queryInsert, [['Lucas', 1], ['Rau', 2], ['Sky', 3]])
+
+# Insert com dicionarios
+cursor.executemany(queryInsert, (
+    {'nome': 'Lucas', 'peso': 1},
+    {'nome': 'Rau', 'peso': 3},
+    {'nome': 'Sky', 'peso': 4},
+
+))
+
+
+# DELETE
+cursor.execute(f'DELETE FROM {TABLE_NAME} where id = 1')
+
+
+# INSERT
+cursor.execute(f'UPDATE {TABLE_NAME} SET name = "bubum" WHERE name = "Sky" ')
+
 
 connection.commit()
-
 
 cursor.close()
 connection.close()
